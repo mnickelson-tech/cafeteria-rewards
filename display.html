@@ -192,9 +192,9 @@
 </head>
 
 <body>
-  <audio id="pointSound" preload="auto">
-    <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
-  </audio>
+<audio id="pointSound" preload="auto">
+  <source src="https://mnickelson-tech.github.io/cafeteria-rewards/ding.mp3" type="audio/mpeg">
+</audio>
 
   <h1>🐦 Ruby’s Cafeteria Rewards</h1>
   <div class="sub">Great expectations = great behavior 💙❤️</div>
@@ -269,6 +269,7 @@
         s.pause();
         s.currentTime = 0;
         soundUnlocked = true;
+        statusEl.textContent = "✅ Live (Sound On)";
         const gate = document.getElementById("soundGate");
         if(gate) gate.style.display = "none";
       }).catch(() => {});
@@ -433,6 +434,7 @@
   </script>
 </body>
 </html>
+
 
 
 
