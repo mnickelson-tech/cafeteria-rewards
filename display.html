@@ -124,6 +124,10 @@
   </style>
 </head>
 <body>
+  <audio id="pointSound" preload="auto">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
+</audio>
+
   <h1>🐦 Ruby’s Cafeteria Rewards</h1>
   <div class="sub">Great expectations = great behavior 💙❤️</div>
 
@@ -199,6 +203,12 @@
         layer.appendChild(t);
       }
     }
+    function playPointSound(){
+  const s = document.getElementById("pointSound");
+  if(!s) return;
+  s.currentTime = 0;
+  s.play().catch(()=>{});
+}
 
     function confetti(){
       const colors = ["#ff5252","#ffd700","#4caf50","#2196f3","#ff8a65","#ab47bc"];
@@ -264,10 +274,14 @@
 
       updateLeaderboard(points);
 
-      if(event && event.ts && event.ts > lastTs){
-        lastTs = event.ts;
-        lastUpdateEl.textContent = "Last update: " + new Date(event.ts).toLocaleTimeString();
-        if(event.type === "add") confetti();
+    if(event && event.ts && event.ts > lastTs){
+  lastTs = event.ts;
+  lastUpdateEl.textContent = "Last update: " + new Date(event.ts).toLocaleTimeString();
+  if(event.type === "add"){
+    confetti();
+    playPointSound();
+  }
+}
       } else {
         lastUpdateEl.textContent = "Last update: " + new Date().toLocaleTimeString();
       }
@@ -286,3 +300,4 @@
   </script>
 </body>
 </html>
+
