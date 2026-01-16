@@ -190,6 +190,49 @@
   35%{ opacity: 1; }
   100%{ transform: translateY(-10px) scale(1.1); opacity: 0; }
 }
+.banner-pop{
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%) translateY(30px) scale(0.98);
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+  width: min(900px, 94vw);
+}
+
+.banner-pop.show{
+  opacity: 1;
+  animation: bannerIn 220ms ease-out forwards;
+}
+
+@keyframes bannerIn{
+  to { transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+.banner-wrap{
+  position: relative;
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,0.35));
+}
+
+.banner-img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+}
+
+.banner-text{
+  position: absolute;
+  left: 6.5%;
+  top: 36%;
+  width: 70%;
+  text-align: left;
+  font-size: clamp(22px, 3.6vw, 54px);
+  color: #111;
+  font-weight: 700;
+  text-shadow: 0 3px 0 rgba(255,255,255,0.75);
+}
 
 
     .confetti{
@@ -334,6 +377,20 @@
     pop.classList.remove("show");
   }, 2000);
 }
+    
+function showBannerForGrade(grade){
+  const pop = document.getElementById("bannerPop");
+  const txt = document.getElementById("bannerText");
+  if(!pop || !txt) return;
+
+  txt.textContent = `Grade ${grade} is ROCKIN’ it!`;
+
+  pop.classList.add("show");
+  clearTimeout(window.__bannerTimer);
+  window.__bannerTimer = setTimeout(() => {
+    pop.classList.remove("show");
+  }, 2000);
+}
 
     function slotPosition(jarEl, index){
       const rect = jarEl.getBoundingClientRect();
@@ -441,15 +498,16 @@
     if(event && event.ts && event.ts > lastTs){
   lastTs = event.ts;
   lastUpdateEl.textContent = "Last update: " + new Date(event.ts).toLocaleTimeString();
- if(event.type === "add"){
+if(event.type === "add"){
   confetti();
   playPointSound();
 
-  // Ruby shows up for big adds (like +5)
+  // Show Ruby banner on big add (like +5)
   if((event.amount || 1) >= 5){
-    showRuby(`Ruby says: Grade ${event.grade} is ROCKIN’ it! ⭐`);
+    showBannerForGrade(event.grade || "");
   }
 }
+
 
       } else {
         lastUpdateEl.textContent = "Last update: " + new Date().toLocaleTimeString();
@@ -458,6 +516,15 @@
       statusEl.textContent = "⚠️ Not connected";
       console.error(err);
     });
+    
+    <!-- +5 Celebration Banner -->
+<div id="bannerPop" class="banner-pop" aria-hidden="true">
+  <div class="banner-wrap">
+    <img class="banner-img" src="https://github.com/mnickelson-tech/Cafeteria-rewards/blob/main/ruby-banner.png" alt="Ruby banner" />
+    <div class="banner-text" id="bannerText">Grade 3 is ROCKIN’ it!</div>
+  </div>
+</div>
+
 
     window.addEventListener("resize", ()=>{
       ref.get().then(snap=>{
@@ -469,5 +536,6 @@
   </script>
 </body>
 </html>
+
 
 
