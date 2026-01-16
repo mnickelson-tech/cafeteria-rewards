@@ -192,10 +192,16 @@
 </head>
 
 <body>
-<audio id="pointSound" preload="auto">
-  <source src="https://mnickelson-tech.github.io/cafeteria-rewards/ding.mp3" type="audio/mpeg">
+<!-- +1 sound (small sparkle) -->
+<audio id="soundPlusOne" preload="auto">
+  <source src="https://assets.mixkit.co/sfx/preview/twinkle.mp3" type="audio/mpeg">
 </audio>
 
+<!-- +5 sound (bigger celebration) -->
+<audio id="soundPlusFive" preload="auto">
+  <source src="https://assets.mixkit.co/sfx/preview/ding.mp3" type="audio/mpeg">
+</audio>
+  
   <h1>🐦 Ruby’s Cafeteria Rewards</h1>
   <div class="sub">Great expectations = great behavior 💙❤️</div>
 
@@ -203,12 +209,6 @@
     <div class="badge">📣 Display Mode (Projector)</div>
     <div class="badge" id="status">Connecting…</div>
     <div class="badge" id="lastUpdate">Last update: —</div>
-  </div>
-
-  <!-- Sound unlock (must be clicked once on projector for audio to work) -->
-  <div id="soundGate">
-    <button id="enableSoundBtn">🔊 Tap to Enable Sound</button>
-    <div id="soundNote">(Chrome blocks sound until you click once on the projector screen.)</div>
   </div>
 
   <!-- +5 Celebration Banner -->
@@ -256,24 +256,29 @@
     const ref = db.ref("rewards");
 
     // ---- SOUND (unlock once) ----
-    let soundUnlocked = true;
+ let soundUnlocked = false;
 
-    function unlockSound(){
-      const s = document.getElementById("pointSound");
-      if(!s) return;
+function unlockSound(){
+  if(soundUnlocked) return;
 
-      s.volume = 0.9;
-      s.currentTime = 2;
+  const s1 = document.getElementById("soundPlusOne");
+  const s5 = document.getElementById("soundPlusFive");
+  if(!s1 || !s5) return;
 
-      s.play().then(() => {
-        s.pause();
-        s.currentTime = 0;
-        soundUnlocked = true;
-        statusEl.textContent = "✅ Live (Sound On)";
-        const gate = document.getElementById("soundGate");
-        if(gate) gate.style.display = "none";
-      }).catch(() => {});
-    }
+  [s1, s5].forEach(s => {
+    s.volume = 0.9;
+    s.currentTime = 0;
+  });
+
+  // Prime audio
+  s1.play().then(() => {
+    s1.pause(); s1.currentTime = 0;
+    s5.pause(); s5.currentTime = 0;
+    soundUnlocked = true;
+    statusEl.textContent = "✅ Live (Sound On)";
+  }).catch(()=>{});
+}
+
 
     function playPointSound(){
       if(!soundUnlocked) return;
@@ -431,9 +436,14 @@
         grades.forEach(g => drawTokens(g, points[g]||0));
       });
     });
+    // Unlock sound on first user interaction anywhere
+["click", "touchstart", "keydown"].forEach(evt => {
+  document.addEventListener(evt, unlockSound, { once: true });
+});
   </script>
 </body>
 </html>
+
 
 
 
