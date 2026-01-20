@@ -9,7 +9,10 @@
 
   <style>
     :root{ --navy:#0a1f44; --navy2:#102b5c; --red:#ff5252; }
-
+html, body{
+  height: 100%;
+  overflow: hidden; /* removes scrollbars */
+}
     body{
       font-family:"Baloo 2", cursive;
       margin:0; padding:18px;
@@ -17,8 +20,17 @@
       background:linear-gradient(var(--navy), var(--navy2));
       text-align:center;
     }
-    h1{ margin:6px 0 0; color:var(--red); font-size:44px; }
-    .sub{ margin:6px 0 14px; opacity:.95; font-size:20px; }
+h1{
+  margin: 10px 0 0;
+  color: var(--red);
+  font-size: clamp(46px, 4vw, 66px);
+  letter-spacing: 0.5px;
+}
+.sub{
+  margin: 10px 0 18px;
+  opacity: .98;
+  font-size: clamp(22px, 1.8vw, 30px);
+}
 
     .toprow{
       display:flex; gap:12px; flex-wrap:wrap; justify-content:center; align-items:center;
@@ -32,22 +44,30 @@
       font-size:16px;
     }
 
-    .jars{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-      gap:16px;
-      align-items:start;
-      margin-top:14px;
+  .jars{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 across */
+  gap: 18px;
+  align-items: stretch;
+  margin-top: 14px;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
     }
-    .jar{
-      background:#fff;
-      color:var(--navy);
-      border-radius:22px;
-      padding:14px;
-      box-shadow:0 12px 26px rgba(0,0,0,.25);
-    }
-    .jar h3{ margin:6px 0 10px; font-size:22px; }
+  .jar{
+  background:#fff;
+  color:var(--navy);
+  border-radius:22px;
+  padding:12px;
+  box-shadow:0 12px 26px rgba(0,0,0,.25);
+  min-height: 360px; /* keeps rows even */
+}
 
+.jar h3{
+  margin: 6px 0 8px;
+  font-size: 22px;
+}
     }
     .jar-body{
       width:100%; height:180px;
@@ -79,8 +99,15 @@
       box-shadow: 0 2px 0 rgba(0,0,0,0.15);
       transform: translate(-50%, -50%);
     }
-    .points{ font-size:34px; margin:10px 0 2px; }
-    .tiny{ font-size:14px; opacity:.85; margin-top:6px; }
+   .points{
+  font-size: 32px;
+  margin: 6px 0 0;
+}
+  .tiny{
+  font-size: 13px;
+  opacity: .85;
+  margin-top: 4px;
+}
 
     .leaderboard{
       margin:18px auto 0;
@@ -477,6 +504,7 @@
   </script>
 </body>
 </html>
+
 
 
 
