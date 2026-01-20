@@ -9,6 +9,13 @@
 
   <style>
     :root{ --navy:#0a1f44; --navy2:#102b5c; --red:#ff5252; }
+    :root{ --scale: min(1, calc(100vh / 900));
+}
+
+body{
+  transform: scale(var(--scale));
+  transform-origin: top center;
+}
 html, body{
   height: 100%;
   overflow: hidden; /* removes scrollbars */
@@ -59,14 +66,16 @@ h1{
   background:#fff;
   color:var(--navy);
   border-radius:22px;
-  padding:12px;
+ padding: 14px;
   box-shadow:0 12px 26px rgba(0,0,0,.25);
-  min-height: 360px; /* keeps rows even */
+ min-height: 420px; /* keeps rows even */
 }
 
 .jar h3{
-  margin: 6px 0 8px;
-  font-size: 22px;
+  margin: 8px 0 10px;
+  font-size: clamp(22px, 2.2vw, 34px);
+  font-weight: 800;
+  letter-spacing: 0.2px;
 }
     }
     .jar-body{
@@ -99,9 +108,10 @@ h1{
       box-shadow: 0 2px 0 rgba(0,0,0,0.15);
       transform: translate(-50%, -50%);
     }
-   .points{
-  font-size: 32px;
-  margin: 6px 0 0;
+.points{
+  font-size: clamp(34px, 3.2vw, 54px);
+  margin: 10px 0 0;
+  font-weight: 900;
 }
   .tiny{
   font-size: 13px;
@@ -184,12 +194,9 @@ h1{
     }
     /* IMAGE-BASED JAR */
 .jar-image-wrapper{
-  position: relative;
-  width: 100%;
-  max-width: 220px;
+  max-width: 260px;   /* was ~200 */
   margin: 0 auto;
 }
-
 .jar-image{
   width: 100%;
   display: block;
@@ -504,6 +511,7 @@ h1{
   </script>
 </body>
 </html>
+
 
 
 
