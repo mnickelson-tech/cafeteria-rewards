@@ -342,7 +342,7 @@
       const txt = document.getElementById("bannerText");
       if(!pop || !txt) return;
 
-      txt.textContent = `Grade ${grade}`;
+    txt.textContent = `${gradeLabels[grade]}`;
 
       pop.classList.remove("show");
       void pop.offsetWidth;
@@ -477,6 +477,7 @@
   </script>
 </body>
 </html>
+
 
 
 
