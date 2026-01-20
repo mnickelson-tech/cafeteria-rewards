@@ -127,8 +127,17 @@
 
     // CHANGE THIS PIN to something staff know (or set "" to disable)
     const RESET_PIN = "2025";
-
     const grades = ["PK","K","1","2","3","4","5","6"];
+    const gradeLabels = {
+  "PK": "Pre-K",
+  "K": "Kinder",
+  "1": "1st Grade",
+  "2": "2nd Grade",
+  "3": "3rd Grade",
+  "4": "4th Grade",
+  "5": "5th Grade",
+  "6": "6th Grade"
+};
     const statusEl = document.getElementById("status");
     const gradesEl = document.getElementById("grades");
     const pinInput = document.getElementById("pin");
@@ -141,7 +150,7 @@
       const d = document.createElement("div");
       d.className = "card";
       d.innerHTML = `
-        <div class="gtitle"><strong>Grade ${g}</strong></div>
+       <div class="gtitle"><strong>${gradeLabels[g]}</strong></div>
         <div class="row">
           <button class="add"  onclick="addPoints('${g}', 1)">+1</button>
           <button class="add5" onclick="addPoints('${g}', 5)">+5</button>
@@ -194,3 +203,4 @@
   </script>
 </body>
 </html>
+
