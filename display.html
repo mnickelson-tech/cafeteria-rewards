@@ -217,24 +217,27 @@
       pointer-events: none;
     }
 
-   .token {
+ .token{
+  position: absolute;
   width: 22px;
   height: 22px;
   border-radius: 50%;
   background-color: #c62828; /* Cardinal red */
   box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  opacity: 1;
 }
-    .token.drop {
+
+.token.drop{
   animation: dropIn 450ms ease-out;
 }
 
-@keyframes dropIn {
-  0% {
-    transform: translateY(-20px) scale(0.9);
+@keyframes dropIn{
+  0%{
+    transform: translate(-50%, -50%) translateY(-26px) scale(0.9);
     opacity: 0;
   }
-  100% {
-    transform: translateY(0) scale(1);
+  100%{
+    transform: translate(-50%, -50%) translateY(0) scale(1);
     opacity: 1;
   }
 }
@@ -417,34 +420,38 @@
       return { left: x + jitter(4), top: y + jitter(4) };
     }
 
-    function drawTokens(grade, state.totals[grade], amount);
-      const maskEl = document.querySelector(`#jar_${grade} .jar-mask`);
-      const layer = document.getElementById("tokens_" + grade);
-      if(!maskEl || !layer) return;
+function drawTokens(grade, count, added = 0){
+  const maskEl = document.querySelector(`#jar_${grade} .jar-mask`);
+  const layer = document.getElementById("tokens_" + grade);
+  if(!maskEl || !layer) return;
 
-      const visible = Math.min(count, MAX_VISIBLE_TOKENS);
-      layer.innerHTML = "";
+  const visible = Math.min(count, MAX_VISIBLE_TOKENS);
+  layer.innerHTML = "";
 
-   const startDropIndex = Math.max(0, visible - added);
+  const startDropIndex = Math.max(0, visible - added);
 
-for (let i = 0; i < visible; i++) {
-  const t = document.createElement("div");
-  t.classList.add("token");
+  for(let i = 0; i < visible; i++){
+    const t = document.createElement("div");
+    t.classList.add("token");
 
-  // 👇 only NEW tokens get the drop animation
-  if (added > 0 && i >= startDropIndex) {
-    t.classList.add("drop");
-  }
-if (amount === 5 && i >= startDropIndex) {
-  t.style.animationDuration = "600ms";
-}
-  const pos = slotPosition(maskEl, i);
-  t.style.left = pos.left + "px";
-  t.style.top = pos.top + "px";
+    // Only NEW tokens get the drop animation
+    if(added > 0 && i >= startDropIndex){
+      t.classList.add("drop");
 
-  layer.appendChild(t);
-}
+      // Slightly slower drop for big adds (optional)
+      if(added >= 5) t.style.animationDuration = "600ms";
+    } else {
+      // Non-animated tokens still need positioning transform
+      t.style.transform = "translate(-50%, -50%)";
     }
+
+    const pos = slotPosition(maskEl, i);
+    t.style.left = pos.left + "px";
+    t.style.top  = pos.top  + "px";
+
+    layer.appendChild(t);
+  }
+}
 
     function renderUI(){
       jarsEl.innerHTML = "";
@@ -488,7 +495,7 @@ if (amount === 5 && i >= startDropIndex) {
     let lastTs = 0;
     renderUI();
 
-    ref.on("value", snap=>{
+   let lastPoints = {}; ref.on("value", snap=>{
       statusEl.textContent = soundUnlocked ? "✅ Live (Sound On)" : "✅ Live";
       const data = snap.val() || {};
       const points = data.points || {};
@@ -506,7 +513,10 @@ if (amount === 5 && i >= startDropIndex) {
           fillEl.style.height = (pct < 2 ? 0 : pct) + "%"; // ✅ prevents thin line
         }
 
-        drawTokens(g, v);
+       const prev = lastPoints[g] || 0;
+const added = Math.max(0, v - prev);
+drawTokens(g, v, added);
+lastPoints[g] = v;
       });
 
       updateLeaderboard(points);
@@ -544,6 +554,7 @@ if (amount === 5 && i >= startDropIndex) {
   </script>
 </body>
 </html>
+
 
 
 
