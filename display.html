@@ -14,16 +14,19 @@
       --red:#ff5252;
     }
 .vs-wrap{
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
 }
 
 .vs-wrap img{
-  width: 200px;        /* 👈 BIG and readable */
-  max-width: 240px;
+  width: min(340px, 28vw);   /* 🔥 BIG */
+  max-width: 420px;
   height: auto;
-   filter: drop-shadow(0 0 16px rgba(255, 82, 82, 0.8));
+  filter: drop-shadow(0 0 22px rgba(255,82,82,0.9));
 }
     html, body{
       height:100%;
@@ -100,9 +103,10 @@
     }
 
 .matchup-grid{
+  position: relative;              /* 👈 anchor for VS */
   display: grid;
-  grid-template-columns: 1fr 220px 1fr; /* 👈 force space for VS */
-  gap: 28px;
+  grid-template-columns: 1fr 1fr;  /* jars only */
+  gap: 80px;                       /* big separation */
   align-items: center;
 }
     .jar{
@@ -601,6 +605,7 @@ renderUI();
   </script>
 </body>
 </html>
+
 
 
 
